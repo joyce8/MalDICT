@@ -1,0 +1,8 @@
+MalDICT_Tags/maldict_packer_train.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_platform_test.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_platform_train.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_vulnerability_test.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_vulnerability_train.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_category_test.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_category_train.jsonl filter=lfs diff=lfs merge=lfs -text
+MalDICT_Tags/maldict_packer_test.jsonl filter=lfs diff=lfs merge=lfs -text

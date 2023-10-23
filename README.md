@@ -1,37 +1,53 @@
 # MalDICT
 
-MalDICT is a collection of four datasets, each supporting a different malware classification task. All of the malware is originally from the [VirusShare](https://virusshare.com/) dataset chunks 0 - 465. The labels for these files were obtained using [ClarAVy](https://github.com/NeuromorphicComputationResearchProgram/ClarAVy/tree/master), which uses antivirus scan results for tagging malware.
+MalDICT is a collection of four datasets, each supporting a different malware classification task. These datasets can be used to benchmark a classifier's performance on identifying malware behaviors, file properties, vulnerability exploitation, and packers. More information is provided in our paper: https://arxiv.org/abs/2310.11706
 
-The MalDICT datasets can be used for benchmarking performance on classifying malware by its behaviors, file properties, vulnerability exploitation, and packers.
+If you use MalDICT for your research, please cite us with:
 
+```
+@misc{joyce2023maldict,
+      title={MalDICT: Benchmark Datasets on Malware Behaviors, Platforms, Exploitation, and Packers},
+      author={Robert J. Joyce and Edward Raff and Charles Nicholas and James Holt},
+      year={2023},
+      eprint={2310.11706},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR}
+}
+```
 
 ## Downloading the Datasets
 
-Hashes and tags for all of the malware in MalDICT are provided in .jsonl files within the ```maldict_tags/``` directory. GIT-LFS is required for downloading these files due to their size. On Debian-based systems, GIT-LFS can be installed using:
+#### Downloading File Hashes and Tags
+
+File hashes and tags for all of the malware in MalDICT are provided in .jsonl files within the ```MalDICT_Tags/``` directory of this repo. GIT-LFS is required for downloading these files due to their size. On Debian-based systems, GIT-LFS can be installed using:
 
 ```
 sudo apt-get install git-lfs
 ```
 
-After installing GIT-LFS you can download the hashes and tags by cloning this repository:
+After installing GIT-LFS, you can download the hashes and tags by cloning this repository:
 
 ```
 git lfs clone https://github.com/joyce8/MalDICT/
 ```
 
-All of the malware in MalDICT is part of the VirusShare corpus (chunks 0 - 465). These files can be accessed via [VirusShare](https://virusshare.com/login) or [vx-underground](https://www.vx-underground.org/#E:/root/Samples/Virusshare%20Collection/Downloadable%20Releases).
+#### Downloading Malicious Files
+
+All of the malware in MalDICT is a subset of the VirusShare corpus (chunks 0 - 465). The full VirusShare corpus is distributed by [VirusShare](https://virusshare.com/login) and by [vx-underground](https://www.vx-underground.org/#E:/root/Samples/Virusshare%20Collection/Downloadable%20Releases). The file hashes in ```MalDICT_Tags/``` can be used to select the appropriate files from VirusShare.
+
+We will be releasing disarmed versions of all of the PE files within MalDICT in the coming days!
 
 
-#### EMBER Raw Metadata
+#### Downloading EMBER Raw Metadata
 
-We extracted EMBER metadata from all of the PE files in MalDICT-Behavior, MalDICT-Platform, and MalDICT-Packer. These metadata files can be downloaded via torrent:
-
-```
-magnet:?xt=urn:btih:180f1792c392470285cba9b55b4a627f8a2fef58&dn=EMBER%5Fmeta&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80&tr=udp%3A%2F%2Fopen.demonii.com%3A1337&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969
-```
+We extracted EMBER metadata from all of the PE files in MalDICT-Behavior, MalDICT-Platform, and MalDICT-Packer. MalDICT-Vulnerability is excluded because most files in it are non-PE files. The EMBER metadata files are too large for Git LFS, and they can be downloaded [here](https://drive.google.com/drive/folders/1QhQBoZ-7RPkad3059VFjLZqLDdb2HW0H?usp=share_link) instead.
 
 
 ## Dataset Contents
+
+#### How Did We Build These Datasets?
+
+We collected nearly 40 million VirusTotal reports for the malware in chunks 0 - 465 of the VirusShare corpus. Then, we ran [ClarAVy](https://github.com/NeuromorphicComputationResearchProgram/ClarAVy/tree/master), a tool we developed for tagging malware, on all of these VirusTotal reports. The tags which ClarAVy outputs can indicate a malicious file's behaviors, file properties, vulnerability exploitation, and packer. Some tags were very rare and others were applied to millions of files, resulting in a large class imbalance. We discarded any tags that were too rare and randomly down-sampled tags that were too common. The discard and down-sampling thresholds were different for each of the four datasets in MalDICT. 
 
 #### MalDICT-Behavior
 
@@ -68,23 +84,9 @@ pip install git+https://github.com/elastic/ember.git
 You will also need the MalDICT tag files in the ```MalDict_Tags/``` folder and the EMBER raw metadata files provided via torrent for training the model. The following example shows how to train a malware packer classifier using the script inside of ```LightGBM_Benchmark/```:
 
 ```
-python lightgbm_benchmark.py /path/to/EMBER_meta/EMBER_packer/ /path/to/MalDICT_Tags/claravy_PACK_train.jsonl /path/to/MalDICT_Tags/claravy_PACK_test.jsonl
+python lightgbm_benchmark.py /path/to/EMBER_meta/EMBER_packer/ /path/to/MalDICT_Tags/claravy_packer_train.jsonl /path/to/MalDICT_Tags/claravy_packer_test.jsonl
 ```
 
 
-## How Did We Build These Datasets?
 
-We collected nearly 40 million VirusTotal reports for the malware in chunks 0 - 465 of VirusShare. Then, we ran ClarAVy on all of these reports to get tags about the malware's behaviors, file properties, vulnerability exploitation, and packers. Some tags were very rare and others were applied to millions of files, resulting in a large class imbalance. We discarded any tags that were too rare and randomly down-sampled tags that were too common. The discard and down-sampling thresholds were different for each of the four MalDICT datasets. This made the class imbalance less extreme, but it is still present.
 
-More information is provided in our [paper](https://arxiv.org/abs/2310.11706). If you use MalDICT for your research, please cite us with:
-
-```
-@misc{joyce2023maldict,
-      title={MalDICT: Benchmark Datasets on Malware Behaviors, Platforms, Exploitation, and Packers},
-      author={Robert J. Joyce and Edward Raff and Charles Nicholas and James Holt},
-      year={2023},
-      eprint={2310.11706},
-      archivePrefix={arXiv},
-      primaryClass={cs.CR}
-}
-```

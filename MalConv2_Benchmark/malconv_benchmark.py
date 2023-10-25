@@ -27,14 +27,14 @@ def get_tags(tag_path):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
+    parser.add_argument("train_dir", help="Path to directory with files " +
+                        "to train on. Directory is traversed recursively.")
+    parser.add_argument("test_dir", help="Path to directory with files " +
+                        "to test on. Directory is traversed recursively.")
     parser.add_argument("maldict_train_file", help="Path to MalDICT .jsonl " +
                         "file with train hashes and tags")
     parser.add_argument("maldict_test_file", help="Path to MalDICT .jsonl " +
                         "file with test hashes and tags")
-    parser.add_argument("train_dir", help="Path to directory with files" +
-                        "to train on. Directory is traversed recursively.")
-    parser.add_argument("test_dir", help="Path to directory with files" +
-                        "to test on. Directory is traversed recursively.")
     parser.add_argument("--num-processes", type=int, default=1)
     args = parser.parse_args()
 

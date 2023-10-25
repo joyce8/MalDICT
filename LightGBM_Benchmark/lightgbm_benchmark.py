@@ -37,18 +37,18 @@ def get_tags(tag_path):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("ember_meta_path", help="path to directory with raw " +
+    parser.add_argument("ember_meta_dir", help="path to directory with raw " +
                         "EMBER metadata .jsonl files (train and test)")
-    parser.add_argument("maldict_train_path", help="path to MalDICT .jsonl " +
+    parser.add_argument("maldict_train_file", help="path to MalDICT .jsonl " +
                         "file with train hashes and tags")
-    parser.add_argument("maldict_test_path", help="path to MalDICT .jsonl " +
+    parser.add_argument("maldict_test_file", help="path to MalDICT .jsonl " +
                         "file with test hashes and tags")
     parser.add_argument("--num-processes", type=int, default=1)
     args = parser.parse_args()
 
     # Validate ember_meta_path
-    train_path = os.path.join(args.ember_meta_path, "train_features.jsonl")
-    test_path = os.path.join(args.ember_meta_path, "test_features.jsonl")
+    train_path = os.path.join(args.ember_meta_dir, "train_features.jsonl")
+    test_path = os.path.join(args.ember_meta_dir, "test_features.jsonl")
 
     # Read metadata
     with open(train_path, "r") as f:
@@ -57,8 +57,8 @@ if __name__ == "__main__":
         test_meta = [line.strip() for line in f]
 
     # Read train/test tags
-    train_md5_tags = get_tags(args.maldict_train_path)
-    test_md5_tags = get_tags(args.maldict_test_path)
+    train_md5_tags = get_tags(args.maldict_train_file)
+    test_md5_tags = get_tags(args.maldict_test_file)
 
     # Convert tags to numeric labels
     all_tags = set()

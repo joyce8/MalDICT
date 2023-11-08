@@ -30,7 +30,7 @@ A default train/test split for MalDICT-Behavior is provided in ```MalDICT_Tags/m
 
 #### MalDICT-Platform
 
-MalDICT-Platform includes 963,492 malicious files and has 43 tags for different target operating systems, file formats, and programming langauge (e.g. win64, pdf, java). It uses the same temporal train/test split method as MalDICT-Behavior. Hashes and tags for the training set are in ```MalDICT_Tags/maldict_platform_train.jsonl``` and the test set is in ```MalDICT_Tags/maldict_platform_test.jsonl```.
+MalDICT-Platform includes 963,492 malicious files and has 43 tags for different target operating systems, file formats, and programming langauges (e.g. win64, pdf, java). It uses the same temporal train/test split method as MalDICT-Behavior. Hashes and tags for the training set are in ```MalDICT_Tags/maldict_platform_train.jsonl``` and the test set is in ```MalDICT_Tags/maldict_platform_test.jsonl```.
 
 
 #### MalDICT-Vulnerability

@@ -64,9 +64,9 @@ if __name__ == "__main__":
     num_labels = len(sorted_tags)
 
     # Get train and test datasets of malicious files
-    train_dataset = BinaryDataset(args.train_dir, train_md5_tags, num_labels,
+    train_dataset = BinaryDataset(args.train_dir, train_md5_tags, num_labels, tag_labels,
                                   max_len=MAX_FILE_LEN)
-    test_dataset = BinaryDataset(args.test_dir, test_md5_tags, num_labels,
+    test_dataset = BinaryDataset(args.test_dir, test_md5_tags, num_labels, tag_labels,
                                  max_len=MAX_FILE_LEN)
 
     # Get train and test loaders
@@ -94,8 +94,8 @@ if __name__ == "__main__":
     # Train classifier
     for epoch in range(EPOCHS):
         for inputs, labels in train_loader:
-            inputs = inputs.to(rank)
-            labels = labels.to(rank)
+            inputs = inputs.to(device)
+            labels = labels.to(device)
             optimizer.zero_grad()
             outputs, _, _ = model(inputs)
             loss = criterion(outputs, labels)
@@ -109,8 +109,8 @@ if __name__ == "__main__":
     model = model.eval()
     with torch.no_grad():
         for inputs, labels in test_loader:
-            inputs = inputs.to(rank)
-            labels = labels.to(rank)
+            inputs = inputs.to(device)
+            labels = labels.to(device)
             outputs, _, _ = model(inputs)
             outputs = F.sigmoid(outputs)
             B = inputs.shape[0]
@@ -121,6 +121,7 @@ if __name__ == "__main__":
     y_pred = np.array(y_pred)
 
     # Get AUC score over all tags
+    print(y_test.shape, y_pred.shape)
     micro_auc = roc_auc_score(y_test, y_pred, average="micro",
                               multi_class="ovr")
     weighted_auc = roc_auc_score(y_test, y_pred, average="weighted",

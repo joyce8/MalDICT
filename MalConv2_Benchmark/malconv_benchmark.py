@@ -121,7 +121,6 @@ if __name__ == "__main__":
     y_pred = np.array(y_pred)
 
     # Get AUC score over all tags
-    print(y_test.shape, y_pred.shape)
     micro_auc = roc_auc_score(y_test, y_pred, average="micro",
                               multi_class="ovr")
     weighted_auc = roc_auc_score(y_test, y_pred, average="weighted",

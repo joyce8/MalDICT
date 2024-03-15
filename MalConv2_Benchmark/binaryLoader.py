@@ -9,7 +9,7 @@ from torch.utils import data
 
 
 class BinaryDataset(data.Dataset):
-    def __init__(self, mal_dir, md5_labels, num_labels, max_len=4000000):
+    def __init__(self, mal_dir, md5_labels, num_labels, tag_labels, max_len=4000000):
         """Class implementing a dataset for directories of malicious files.
         
         Arguments:
@@ -23,9 +23,10 @@ class BinaryDataset(data.Dataset):
         self.all_files = []
         self.max_len = max_len
         self.num_labels = num_labels
+        self.tag_labels = tag_labels
         for root, dirs, files in os.walk(mal_dir):
             for file_name in files:
-                md5 = file_name[:-32]
+                md5 = file_name[-32:]
                 if md5_labels.get(md5) is None:
                     continue
                 file_path = os.path.join(root, file_name)
@@ -43,7 +44,7 @@ class BinaryDataset(data.Dataset):
         x = torch.tensor(x)
         y = torch.zeros(self.num_labels)
         for label in labels:
-            y[label] = 1
+            y[self.tag_labels[label]] = 1
         return x, y
     
 

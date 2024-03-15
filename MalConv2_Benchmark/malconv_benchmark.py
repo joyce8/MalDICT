@@ -10,6 +10,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_recall_fscore_support as prfs
 from binaryLoader import BinaryDataset, RandomChunkSampler, pad_collate_func
 from MalConv import MalConv
+import torch.nn.functional as F
 
 
 def get_tags(tag_path):
